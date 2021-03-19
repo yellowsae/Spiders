@@ -4,8 +4,8 @@ import os
 from parsel import Selector
 from time import sleep
 
-if not os.path.exists('./e-hentai/'):
-    os.mkdir('./e-hentai/')
+if not os.path.exists('./Img/'):
+    os.mkdir('./Img/')
 
 
 # 发送请求
@@ -37,24 +37,20 @@ def get_info(info,title):
     img_url = selector.xpath('//div[@id="i3"]//img/@src').get()
     img_name = img_url.split('/')[-1]
     content = get_url(img_url)
-    # 创建本子文件夹 
-    # name = title.split('.')[-1]
-    if not os.path.exists('./e-hentai/'+ title + '/' ):
-        os.mkdir('./e-hentai/' + title + "/")
-    with open ('./e-hentai/' + title +  "/" + img_name , 'wb' ) as f :
+    with open ('./Img/' + title + img_name , 'wb' ) as f :
         f.write(content.content)
         print('下载成功',title + img_name)
     
 
 # 主函数 ，对每一个本子详情页进行访问 
 def main(base_url,title):
-    for url ,name  in zip(base_url,title):
+    for url in base_url:
         # url = 'https://e-hentai.org/g/1869046/638fba71b5/'
         html = get_url(url)
         all_url = get_html(html.text)
         for img_url in all_url:
             info = get_url(img_url)
-            get_info(info.text,name)
+            get_info(info.text,title)
 
 # 爬取主页的所有本子url 
 def get_url_info(html):
@@ -77,6 +73,3 @@ if __name__ == '__main__':
         url = f'https://e-hentai.org/tag/language:chinese/{page}'
         base_url , title = start_url(url)
         main(base_url,title)
-
-    
-# 代码不够简洁 , 爬取慢 ，没有多线程 
