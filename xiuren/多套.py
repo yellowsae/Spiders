@@ -24,15 +24,17 @@ def get_url(url):
     else:
         return None
 
+# 下一页的三张img主页的url 
 def get_html(html):
     selector = parsel.Selector(html)
     base_url = []
     next_url = selector.xpath('//div[@class="pagination1"][1]//ul/a/@href').getall()
     for url in next_url:
         base_url.append('https://www.jpmnb.cc/' + url)
-    base_url.pop() # 删除最后一个url 
+    base_url.pop() # 删除最后一个url ，表示不需要最后一个的下一页 
     return base_url
 
+# 进行img 的提取 
 def get_img_html(img_html):
     selector = parsel.Selector(img_html)
     # img_urls 
@@ -45,14 +47,16 @@ def get_img_html(img_html):
     # 返回下载
     return img_url , title
 
-
+# 下载保存
 def save_content(img_url,title):
     for url in img_url:
         try : 
             # 图片后缀 命名 
+            if not os.path.exists('./合集/xiuren/' + title +"/"):
+                os.mkdir('./合集/xiuren/' + title + '/')
             img_name = url.split('/')[-1]
             res = requests.get(url)
-            with open('./合集/xiuren/' + title + '_'+ img_name , 'wb' ) as f :
+            with open('./合集/xiuren/' + title + '/'+ img_name , 'wb' ) as f :
                 f.write(res.content)
                 print('下载成功',title + img_name)
         except:
@@ -86,7 +90,7 @@ def get_urls():
     base_url = []
     try : 
         for page in range(1,3):
-            print('正在爬取第' + str(page) + '页')
+            print('正在爬取第' + str(page) + ' 页')
             url = f'https://www.jpmnb.cc/plus/search/index.asp?keyword=%E6%9D%A8%E6%99%A8%E6%99%A8&searchtype=title&p={page}'
             # 停止0.5s 访问下一页
             sleep(0.5) 
