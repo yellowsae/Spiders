@@ -42,6 +42,7 @@ else:
             i +=1 
         else:
             ans += 1 
+            print(i,ans)
             break
 
     while i < len(word):
