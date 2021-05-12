@@ -4,6 +4,8 @@ from fake_useragent import UserAgent
 from parsel import Selector
 import time 
 
+
+
 if not os.path.exists('./壁纸项目/Img/'):
     os.mkdir('./壁纸项目/Img/')
 
