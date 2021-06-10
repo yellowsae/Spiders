@@ -38,5 +38,7 @@ target/
 ##  png ###
 q
 QR.png
+*.jpg
+*.png
 
 /24mn
